@@ -10,12 +10,14 @@ var MEU_ENDERECO = null;
 var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 6;
 
-var NUMERO_WHATSAPP = '553498296385'
+var NUMERO_WHATSAPP = '553498296385';
 
 cardapio.eventos ={
 
     init: () =>{
         cardapio.metodos.obterItensCardapio();
+        cardapio.metodos.carregarBotaoReserva();
+        cardapio.metodos.carregarBotaoLigar();
     }
 }
 
@@ -25,7 +27,7 @@ cardapio.metodos ={
     obterItensCardapio: (categoria = 'burgers', vermais = false) =>{
 
         var filtro = MENU[categoria];
-        console.log(filtro)
+        console.log(filtro);
 
         if(!vermais){
             $("#itensCardapio").html('')
@@ -498,6 +500,39 @@ cardapio.metodos ={
         }
 
     },
+
+    carregarBotaoReserva: () =>{
+
+        var texto = 'Olá gostaria de fazer uma *reserva*';
+
+        let encode = encodeURI(texto);
+        let URL = `https://wa.me/${NUMERO_WHATSAPP}?text=${encode}`;
+
+        $("#btnReserva").attr('href', URL);
+
+    },
+    
+    carregarBotaoLigar: () =>{
+
+        $("#btnLigar").attr('href', `tel:${NUMERO_WHATSAPP}`);
+
+    },
+
+    abrirDepoimento: (depoimento) =>{
+
+        $("#depoimento-1").addClass('hidden');
+        $("#depoimento-2").addClass('hidden');
+        $("#depoimento-3").addClass('hidden');
+
+        $("#btnDepoimento-1").removeClass('active');
+        $("#btnDepoimento-2").removeClass('active');
+        $("#btnDepoimento-3").removeClass('active');
+
+
+        $("#depoimento-" + depoimento).removeClass("hidden");
+        $("#btnDepoimento-" + depoimento).addClass("active");
+
+    },
     
 
     mensagem: (texto, cor = 'red', tempo = 3500) =>{
@@ -529,7 +564,7 @@ cardapio.templates ={
 
     item: `
     
-            <div class="col-3 mb-3">
+            <div class="col-12 col-lg-3 col-md-3 col-sm-6 mb-3 wow fadeInUp delay-02s">
                 <div class="card card-item" id="\${id}">
                     <div class="img-produto">
                         <img src="\${img}"/>
@@ -566,7 +601,7 @@ cardapio.templates ={
                         <span class="btn-menos" onclick="cardapio.metodos.diminuirQuantidadeCarrinho('\${id}')"><i class="fas fa-minus"></i></span>
                         <span class="add-numero-itens" id="qntd-carrinho-\${id}">\${qntd}</span>
                         <span class="btn-mais" onclick="cardapio.metodos.aumentarQuantidadeCarrinho('\${id}')"><i class="fas fa-plus"></i></span>
-                        <span class="btn btn-remove" onclick="cardapio.metodos.removerItemCarrinho('\${id}')"><i class="fa fa-times"></i></span>
+                        <span class="btn btn-remove no-mobile" onclick="cardapio.metodos.removerItemCarrinho('\${id}')"><i class="fa fa-times"></i></span>
                         </div>
                     </div>
 
